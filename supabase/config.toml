@@ -1,0 +1,4 @@
+project_id = "mrfgfufkfzlenatoxdpo"
+
+[functions.smart-scheduler]
+verify_jwt = false
