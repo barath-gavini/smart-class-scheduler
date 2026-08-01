@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "sdk_version": "0.26.1",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://mrfgfufkfzlenatoxdpo.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "smart-class-scheduler",
+      "version": "0.1.0",
+      "title": "Smart Class Scheduler"
+    },
+    "tools": [
+      {
+        "name": "whoami",
+        "title": "Who am I",
+        "description": "Return the signed-in user's profile and role in Smart Class Scheduler.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_timetable",
+        "title": "List timetable entries",
+        "description": "List scheduled classes with course, section, faculty, classroom and time slot. Optionally filter by day of week (0=Sunday..6=Saturday).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "day_of_week": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6,
+              "description": "0=Sunday .. 6=Saturday"
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "description": "Max rows to return (default 50)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_classrooms",
+        "title": "List classrooms",
+        "description": "List classrooms with capacity, building and facilities. Optionally filter by availability and minimum capacity.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "only_available": {
+              "type": "boolean",
+              "description": "Return only classrooms marked available."
+            },
+            "min_capacity": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Minimum seating capacity."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_faculty",
+        "title": "List faculty",
+        "description": "List faculty members with department, designation, specialization and availability.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "search": {
+              "type": "string",
+              "description": "Filter by name or email substring."
+            },
+            "only_available": {
+              "type": "boolean",
+              "description": "Return only faculty marked available."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_courses",
+        "title": "List courses and sections",
+        "description": "List courses with department, credits, semester and their sections.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "semester": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 12,
+              "description": "Filter by semester number."
+            },
+            "search": {
+              "type": "string",
+              "description": "Filter by course code or name substring."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_absences",
+        "title": "List faculty absences",
+        "description": "List recorded faculty absences with substitute assignment and processing status.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "from_date": {
+              "type": "string",
+              "description": "Only absences on or after this date (YYYY-MM-DD)."
+            },
+            "to_date": {
+              "type": "string",
+              "description": "Only absences on or before this date (YYYY-MM-DD)."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "report_absence",
+        "title": "Report an absence",
+        "description": "Record an absence for the signed-in faculty member on a given date so the scheduler can reallocate their classes.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": false,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "absence_date": {
+              "type": "string",
+              "description": "Date of the absence in YYYY-MM-DD format."
+            },
+            "reason": {
+              "type": "string",
+              "description": "Short reason for the absence."
+            }
+          },
+          "required": [
+            "absence_date"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
