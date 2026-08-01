@@ -18,6 +18,7 @@ import MarkAbsence from "./pages/dashboard/MarkAbsence";
 import MySchedule from "./pages/dashboard/MySchedule";
 import Settings from "./pages/dashboard/Settings";
 import NotFound from "./pages/NotFound";
+import OAuthConsent from "./pages/OAuthConsent";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Navigate to="/auth" replace />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
             <Route path="/dashboard" element={<DashboardLayout />}>
               <Route index element={<DashboardHome />} />
               <Route path="faculty" element={<FacultyManagement />} />
