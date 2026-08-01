@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +11,9 @@ import { toast } from "sonner";
 
 export default function Auth() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const rawNext = params.get("next");
+  const next = rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/dashboard";
   const { signIn, signUp } = useAuth();
   const [loading, setLoading] = useState(false);
 
@@ -28,7 +31,7 @@ export default function Auth() {
       toast.error(error.message);
     } else {
       toast.success("Welcome back!");
-      navigate("/dashboard");
+      navigate(next);
     }
 
     setLoading(false);
@@ -49,7 +52,7 @@ export default function Auth() {
       toast.error(error.message);
     } else {
       toast.success("Account created! You can now sign in.");
-      navigate("/dashboard");
+      navigate(next);
     }
 
     setLoading(false);
